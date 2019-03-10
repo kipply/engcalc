@@ -154,14 +154,14 @@ long double evaluate(vi v) {
 }
 
 pdv approximate(long double target, long double eps) {
-	printf("Approximating %.10Lf\n", target);
+	printf("Approximating %.15Le, eps = %.15Le\n", target, eps);
 	int idx = lower_bound(pairs.begin(), pairs.end(), pdv(target, vector<int>())) - pairs.begin();
 	if (abs(pairs[idx - 1].first - target) < abs(pairs[idx].first - target))
 		idx--;
 	long double approx = pairs[idx].first;
 	vi ans = pairs[idx].second;
 	long double error = abs(target - approx);
-	if (error < eps)
+	if (error < eps && abs(abs(error/target)-1) < eps)
 		return pdv(approx, ans);
 	if (abs(target) > 1e4 || abs(target) < 1e-4) {
 		pdv errorApprox = approximate(target / approx, eps / approx);
@@ -203,7 +203,7 @@ int main() {
 	sort(pairs.begin(), pairs.end());
 
 	pdv p = approximate(target, 1e-3);
-	printf("Approximate value: %.10Lf\n", p.first);
+	printf("Approximate value: %.15Le\n", p.first);
 	cout << latexfy(p.second) << endl;
 	return 0;
 }
