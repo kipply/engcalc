@@ -206,6 +206,8 @@ int main() {
 
 	pdv p = approximate(target, 1e-3);
 	// printf("%.20Le\n", p.first);
-	cout << latexfy(p.second) << " = " << p.first << endl;
+	int precision =  -(int)log10(abs(target - p.first)) + 2;
+	cout << precision << endl;
+	cout << latexfy(p.second) << " = " << fixed << setprecision(precision) << p.first << endl;
 	return 0;
 }
