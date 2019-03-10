@@ -34,10 +34,10 @@ string latexfy(vector<int> v) {
         for(int k=0; k < 2; k++)
           if(exodr[ind - k] <2)
             ex[ind - k] = "\\left (" + ex[ind -k] + "\\right )";
-        //if(exodr[ind - 2] != 2)
-        ep = ex[ind - 2] + "" +ex[ind -1];
-        //else
-          //ep = ex[ind - 2] + "\\cdot " + ex[ind -1];
+        if(ex[ind - 2] == ex[ind - 1] && exodr[ind - 2] == 3)
+          ep = ex[ind - 2] + "\\cdot " + ex[ind -1];
+        else
+          ep = ex[ind - 2] + "" +ex[ind -1];
       }
       if(v[i] == 8)
         ep = "\\frac {" + ex[ind - 2] + "}{"+ ex[ind - 1] + "}";
