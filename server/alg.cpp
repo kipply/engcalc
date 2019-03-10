@@ -155,16 +155,19 @@ long double evaluate(vi v) {
 
 pdv approximate(long double target, long double eps) {
 	// printf("Approximating %.15Le, eps = %.15Le\n", target, eps);
+	if (eps < 0){
+		return pdv();
+	}
 	int idx = lower_bound(pairs.begin(), pairs.end(), pdv(target, vector<int>())) - pairs.begin();
 	if (abs(pairs[idx - 1].first - target) < abs(pairs[idx].first - target))
 		idx--;
 	long double approx = pairs[idx].first;
 	vi ans = pairs[idx].second;
 	long double error = abs(target - approx);
-	if (error < eps && abs(abs(error/target)-1) < eps)
+	if (error < eps && abs(abs(approx/target)-1) < eps)
 		return pdv(approx, ans);
 	if (abs(target) > 1e4 || abs(target) < 1e-4) {
-		pdv errorApprox = approximate(target / approx, eps / approx);
+		pdv errorApprox = approximate(target / approx, abs(eps / approx));
 		ans.insert(ans.end(), errorApprox.second.begin(), errorApprox.second.end());
 		ans.push_back(7);
 		return pdv(approx * errorApprox.first, ans);
