@@ -91,12 +91,31 @@ double evaluate(vi v) {
 	return stack[0];
 }
 
+vi approximate(double target) {
+	printf("Approximating %.10lf\n", target);
+	int idx = lower_bound(pairs.begin(), pairs.end(), pdv(target, vector<int>())) - pairs.begin();
+	if (abs(pairs[idx - 1].first - target) < abs(pairs[idx].first - target))
+		idx--;
+	double approx = pairs[idx].first;
+	vi ans = pairs[idx].second;
+	double error = abs(target - approx);
+	if (error < 1e-3)
+		return ans;
+	vi errorApprox = approximate(error);
+	ans.insert(ans.end(), errorApprox.begin(), errorApprox.end());
+	if (approx < target)
+		ans.push_back(5); // add error to approx
+	else
+		ans.push_back(6); // subtract error from approx
+	return ans;
+}
+
 int main() {
 	double target;
 	scanf("%lf", &target);
 	vi t;
 	t.push_back(0);
-	for (int i = 0; i < 4; i++) {
+	for (int i = 0; i < 5; i++) {
 		int j = templates.size();
 		templateSearch(t, i, i, 1);
 		vi s(2 * i + 1);
@@ -109,14 +128,22 @@ int main() {
 	}
 	printf("pairs.size() = %d\n", (int)pairs.size());
 	sort(pairs.begin(), pairs.end());
+
+	vi v = approximate(target);
+	printf("Sequence: ");
+	for (int i = 0; i < v.size(); i++) {
+		printf("%d ", v[i]);
+	}
+	return 0;
+
 	int idx = lower_bound(pairs.begin(), pairs.end(), pdv(target, vector<int>())) - pairs.begin();
-	printf("Approximation: %.10lf\n", pairs[idx].first);
+	printf("Approximation: %.15lf\n", pairs[idx].first);
 	printf("Sequence: ");
 	for (int i = 0; i < pairs[idx].second.size(); i++) {
 		printf("%d ", pairs[idx].second[i]);
 	}
 	printf("\n");
-	printf("Approximation: %.10lf\n", pairs[idx - 1].first);
+	printf("Approximation: %.15lf\n", pairs[idx - 1].first);
 	printf("Sequence: ");
 	for (int i = 0; i < pairs[idx - 1].second.size(); i++) {
 		printf("%d ", pairs[idx - 1].second[i]);
