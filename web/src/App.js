@@ -26,6 +26,12 @@ class App extends Component {
     this.answerEquation = "";
     this.eState = true;
     this.answer = "";
+
+    this.url = process.env.PUBLIC_URL + '/song.mp3';
+    this.audio = new Audio(this.url);
+    this.audioState = true;
+    this.audio.play();
+
   }
 
   click(operation) {
@@ -90,6 +96,13 @@ class App extends Component {
   }
 
   music() {
+    if (this.audioState) {
+      this.audio.pause();
+      this.audioState = false; 
+    } else {
+      this.audio.play();
+      this.audioState = true;
+    }
   }
 
   render() {
