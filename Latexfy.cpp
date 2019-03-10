@@ -40,7 +40,7 @@ string latexfy(vector<int> v) {
           //ep = ex[ind - 2] + "\\cdot " + ex[ind -1];
       }
       if(v[i] == 8)
-        ep = "\\dfrac {" + ex[ind - 2] + "}{"+ ex[ind - 1] + "}";
+        ep = "\\frac {" + ex[ind - 2] + "}{"+ ex[ind - 1] + "}";
       if(v[i] == 9){
         if(exodr[ind - 2] <3)
           ex[ind - 2] = "\\left ("+ex[ind - 2]+"\\right )";
