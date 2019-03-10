@@ -2,13 +2,12 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<int> v;
 static vector<string> cst = {"\\pi ","e","\\varphi ","\\gamma ","c"};
 static vector<int> odr = {0,0,2,1,2,2};
 
 // 5:+, 6:-, 7:*, 8:/, 9:^, 10:!
 // 0:+-, 1:/, 2:^*!, 3:num
-string latexfy() {
+string latexfy(vector<int> v) {
   vector<string> ex(v.size());// = new vector<string>();
   vector<int> exodr(v.size());// = new vector<int>();
   string ep;
