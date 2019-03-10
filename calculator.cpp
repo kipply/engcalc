@@ -5,10 +5,10 @@ using namespace std;
 
 vector<vi> templates;
 vector<vi> sequences;
-long double constants[5] = {M_PI, M_E, (1.0 + sqrt(5)) / 2, 0.5772156649, 299792458};
+long double constants[5] = {M_PI, M_E, (1.0 + sqrt(5)) / 2, 0.57721566490153, 0.007297352566417};
 vector<pdv> pairs;
 
-static vector<string> cst = {"\\pi ","e","\\varphi ","\\gamma ","c"};
+static vector<string> cst = {"\\pi ", "e", "\\varphi ", "\\gamma ", "\\alpha "};
 // static vector<string> cst = {"pi ","e ","GoldenRatio ","EulerGamma ","300000000 "};
 static vector<int> odr = {0, 0, 2, 1, 2, 2};
 
@@ -46,7 +46,7 @@ string latexfy(vi v) {
 				//ep = ex[ind - 2] + "\\cdot " + ex[ind -1];
 			}
 			if (v[i] == 8)
-				ep = "\\dfrac{" + ex[ind - 2] + "}{" + ex[ind - 1] + "}";
+				ep = "\\frac{" + ex[ind - 2] + "}{" + ex[ind - 1] + "}";
 			if (v[i] == 9) {
 				if (exodr[ind - 2] < 3)
 					ex[ind - 2] = "\\left(" + ex[ind - 2] + "\\right)";
@@ -153,7 +153,7 @@ long double evaluate(vi v) {
 	return stack[0];
 }
 
-pdv approximate(long double target) {
+pdv approximate(long double target, long double eps) {
 	printf("Approximating %.10Lf\n", target);
 	int idx = lower_bound(pairs.begin(), pairs.end(), pdv(target, vector<int>())) - pairs.begin();
 	if (abs(pairs[idx - 1].first - target) < abs(pairs[idx].first - target))
@@ -161,17 +161,25 @@ pdv approximate(long double target) {
 	long double approx = pairs[idx].first;
 	vi ans = pairs[idx].second;
 	long double error = abs(target - approx);
-	if (error < 1e-3)
+	if (error < eps)
 		return pdv(approx, ans);
-	pdv errorApprox = approximate(error);
-	ans.insert(ans.end(), errorApprox.second.begin(), errorApprox.second.end());
-	if (approx < target) {
-		ans.push_back(5); // add error to approx
-		return pdv(approx + errorApprox.first, ans);
+	if (abs(target) > 1e4 || abs(target) < 1e-4) {
+		pdv errorApprox = approximate(target / approx, eps / approx);
+		ans.insert(ans.end(), errorApprox.second.begin(), errorApprox.second.end());
+		ans.push_back(7);
+		return pdv(approx * errorApprox.first, ans);
 	}
-	else{
-		ans.push_back(6); // subtract error from approx
-		return pdv(approx - errorApprox.first, ans);
+	else {
+		pdv errorApprox = approximate(error, eps);
+		ans.insert(ans.end(), errorApprox.second.begin(), errorApprox.second.end());
+		if (approx < target) {
+			ans.push_back(5); // add error to approx
+			return pdv(approx + errorApprox.first, ans);
+		}
+		else {
+			ans.push_back(6); // subtract error from approx
+			return pdv(approx - errorApprox.first, ans);
+		}
 	}
 }
 
@@ -180,8 +188,7 @@ int main() {
 	scanf("%Lf", &target);
 	vi t;
 	t.push_back(0);
-	printf("target = %Lf\n", target);
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		int j = templates.size();
 		templateSearch(t, i, i, 1);
 		vi s(2 * i + 1);
@@ -189,18 +196,13 @@ int main() {
 			makeSequence(s, 0, j);
 		}
 	}
-	printf("Done1\n");
 	for (int i = 0; i < sequences.size(); i++) {
 		pairs.push_back(pdv(evaluate(sequences[i]), sequences[i]));
 	}
-	printf("Done2\n");
 	printf("pairs.size() = %d\n", (int)pairs.size());
 	sort(pairs.begin(), pairs.end());
 
-	printf("Done3\n");
-	pdv p = approximate(target);
-
-	printf("Done4\n");
+	pdv p = approximate(target, 1e-3);
 	printf("Approximate value: %.10Lf\n", p.first);
 	cout << latexfy(p.second) << endl;
 	return 0;
