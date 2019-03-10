@@ -154,7 +154,7 @@ long double evaluate(vi v) {
 }
 
 pdv approximate(long double target, long double eps) {
-	printf("Approximating %.15Le, eps = %.15Le\n", target, eps);
+	// printf("Approximating %.15Le, eps = %.15Le\n", target, eps);
 	if (eps < 0){
 		return pdv();
 	}
@@ -188,7 +188,7 @@ pdv approximate(long double target, long double eps) {
 
 int main() {
 	long double target;
-	scanf("%Lf", &target);
+	cin >> target;
 	vi t;
 	t.push_back(0);
 	for (int i = 0; i < 4; i++) {
@@ -202,11 +202,10 @@ int main() {
 	for (int i = 0; i < sequences.size(); i++) {
 		pairs.push_back(pdv(evaluate(sequences[i]), sequences[i]));
 	}
-	printf("pairs.size() = %d\n", (int)pairs.size());
 	sort(pairs.begin(), pairs.end());
 
 	pdv p = approximate(target, 1e-3);
-	printf("Approximate value: %.15Le\n", p.first);
-	cout << latexfy(p.second) << endl;
+	// printf("%.20Le\n", p.first);
+	cout << latexfy(p.second) << " = " << p.first << endl;
 	return 0;
 }
