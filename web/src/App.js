@@ -38,12 +38,10 @@ class App extends Component {
   }
 
   play = () => {
-  this.setState({ play: true, pause: false })
     this.audio.play();
   }
   
   pause = () => {
-  this.setState({ play: false, pause: true })
     this.audio.pause();
   }
   
