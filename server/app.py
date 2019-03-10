@@ -11,3 +11,6 @@ def evaluate():
   p = subprocess.Popen(['./a.out'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
   p.stdin.write(bytes(args['value'], 'utf-8')) 
   return p.communicate()[0]
+  
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
