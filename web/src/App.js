@@ -81,9 +81,13 @@ class App extends Component {
   evaluate() {
     var toEval = this.equation;
     toEval = toEval.replace("x", "*")
-    var matches = toEval.match(/ln\((.+)\)/);
-    if (matches) {
-      toEval = toEval.replace(/ln\((.+)\)/, "log(" + matches[1] + ", e)")
+    var lnm = toEval.match(/ln\((.+)\)/);
+    var logm = toEval.match(/log\((.+)\)/);
+    if (lnm) {
+      toEval = toEval.replace(/ln\((.+)\)/, "log(" + lnm[1] + ", e)")
+    }
+    if (logm) {
+      toEval = toEval.replace(/log\((.+)\)/, "log(" + logm[1] + ", 10)")
     }
     try {
       this.answer = math.eval(toEval);
