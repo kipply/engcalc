@@ -164,7 +164,7 @@ pdv approximate(long double target, long double eps) {
 	long double approx = pairs[idx].first;
 	vi ans = pairs[idx].second;
 	long double error = abs(target - approx);
-	if (error < eps && abs(abs(approx/target)-1) < eps)
+	if (target == 0 || (error < eps && abs(abs(approx/target)-1) < eps))
 		return pdv(approx, ans);
 	if (abs(target) > 1e4 || abs(target) < 1e-4) {
 		pdv errorApprox = approximate(target / approx, abs(eps / approx));
