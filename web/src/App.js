@@ -47,17 +47,17 @@ class App extends Component {
   }
 
 
-  _handleKeyDown = (event) => {
-    if (/[0-9]/.test(event.key)) {
-      this.click(event.key);
-    }
-    if (/^Backspace$/.test(event.key)) {
-      this.backspace(event.key);
-    }
-    if (/^[a-z]$/.test(event.key)) {
-      this.click(event.key);
-    }
-  }
+  // _handleKeyDown = (event) => {
+  //   if (/[0-9]/.test(event.key)) {
+  //     this.click(event.key);
+  //   }
+  //   if (/^Backspace$/.test(event.key)) {
+  //     this.backspace(event.key);
+  //   }
+  //   if (/^[a-z]$/.test(event.key)) {
+  //     this.click(event.key);
+  //   }
+  // }
 
   componentDidMount(){
       document.addEventListener("keydown", this._handleKeyDown);
@@ -78,6 +78,7 @@ class App extends Component {
         this.answerEquation = response.data; 
         this.equation = "";
         this.eState = false;
+        console.log(this.answerEquation);
         this.setState({ state: this.state });
       })
       .catch(function (error) {
