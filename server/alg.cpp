@@ -14,7 +14,7 @@ static vector<int> odr = {0, 0, 2, 1, 2, 2};
 
 // 5:+, 6:-, 7:*, 8:/, 9:^, 10:!
 // 0:+-, 1:/, 2:^*!, 3:num
-string latexfy(vi v) {
+string latexfy(vector<int> v) {
 	vector<string> ex(v.size()); // = new vector<string>();
 	vector<int> exodr(v.size()); // = new vector<int>();
 	string ep;
@@ -33,23 +33,23 @@ string latexfy(vi v) {
 				ep = ex[ind - 2] + " + " + ex[ind - 1];
 			if (v[i] == 6) {
 				if (exodr[ind - 1] == 0)
-					ex[ind - 1] = "\\left(" + ex[ind - 1] + "\\right)";
+					ex[ind - 1] = "\\left (" + ex[ind - 1] + "\\right )";
 				ep = ex[ind - 2] + " - " + ex[ind - 1];
 			}
 			if (v[i] == 7) {
-				for (int k = 0; k < 2; k++)
+				for (int k = 1; k < 3; k++)
 					if (exodr[ind - k] < 2)
-						ex[ind - k] = "\\left(" + ex[ind - k] + "\\right)";
-				//if(exodr[ind - 2] != 2)
-				ep = ex[ind - 2] + "" + ex[ind - 1];
-				//else
-				//ep = ex[ind - 2] + "\\cdot " + ex[ind -1];
+						ex[ind - k] = "\\left (" + ex[ind - k] + "\\right )";
+				if (ex[ind - 2] == ex[ind - 1] && exodr[ind - 2] == 3)
+					ep = ex[ind - 2] + "\\cdot " + ex[ind - 1];
+				else
+					ep = ex[ind - 2] + "" + ex[ind - 1];
 			}
 			if (v[i] == 8)
-				ep = "\\frac{" + ex[ind - 2] + "}{" + ex[ind - 1] + "}";
+				ep = "\\frac {" + ex[ind - 2] + "}{" + ex[ind - 1] + "}";
 			if (v[i] == 9) {
 				if (exodr[ind - 2] < 3)
-					ex[ind - 2] = "\\left(" + ex[ind - 2] + "\\right)";
+					ex[ind - 2] = "\\left (" + ex[ind - 2] + "\\right )";
 				ep = ex[ind - 2] + "^{" + ex[ind - 1] + "}";
 			}
 			exodr[ind - 2] = odr[v[i] - 5];
@@ -61,7 +61,7 @@ string latexfy(vi v) {
 
 		if (v[i] == 10) {
 			if (exodr[ind - 1] < 3)
-				ex[ind - 1] = "\\left(" + ex[ind - 1] + "\\right)";
+				ex[ind - 1] = "\\left (" + ex[ind - 1] + "\\right )";
 			ex[ind - 1] = ex[ind - 1] + "!";
 			exodr[ind - 1] = 2;
 		}
@@ -155,7 +155,7 @@ long double evaluate(vi v) {
 
 pdv approximate(long double target, long double eps) {
 	// printf("Approximating %.15Le, eps = %.15Le\n", target, eps);
-	if (eps < 0){
+	if (eps < 0) {
 		return pdv();
 	}
 	int idx = lower_bound(pairs.begin(), pairs.end(), pdv(target, vector<int>())) - pairs.begin();
@@ -164,7 +164,7 @@ pdv approximate(long double target, long double eps) {
 	long double approx = pairs[idx].first;
 	vi ans = pairs[idx].second;
 	long double error = abs(target - approx);
-	if (target == 0 || (error < eps && abs(abs(approx/target)-1) < eps))
+	if (target == 0 || (error < eps && abs(abs(approx / target) - 1) < eps))
 		return pdv(approx, ans);
 	if (abs(target) > 1e4 || abs(target) < 1e-4) {
 		pdv errorApprox = approximate(target / approx, abs(eps / approx));
@@ -206,7 +206,7 @@ int main() {
 
 	pdv p = approximate(target, 1e-3);
 	// printf("%.20Le\n", p.first);
-	int precision =  -(int)log10(abs(target - p.first)) + 2;
+	int precision = -(int)log10(abs(target - p.first)) + 2;
 	cout << latexfy(p.second) << " = " << fixed << setprecision(precision) << p.first << endl;
 	return 0;
 }
