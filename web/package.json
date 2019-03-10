@@ -3,9 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "firebase": "^5.8.6",
+    "mathjs": "^5.7.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-scripts": "2.1.8"
+    "react-latex": "^1.2.0",
+    "react-scripts": "2.1.8",
+    "react-tex": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",
