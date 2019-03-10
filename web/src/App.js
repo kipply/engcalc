@@ -48,14 +48,14 @@ class App extends Component {
 
 
   _handleKeyDown = (event) => {
-    if (/[0-9]/.test(event.key)) {
+    if (/^[0-9()+-/*coslogsin%tan^]$/.test(event.key)) {
       this.click(event.key);
     }
     if (/^Backspace$/.test(event.key)) {
       this.backspace(event.key);
     }
-    if (/^[a-z]$/.test(event.key)) {
-      this.click(event.key);
+    if (/^Enter$/.test(event.key)) {
+      this.evaluate(event.key);
     }
   }
 
@@ -78,6 +78,7 @@ class App extends Component {
         this.answerEquation = response.data; 
         this.equation = "";
         this.eState = false;
+        console.log(this.answerEquation);
         this.setState({ state: this.state });
       })
       .catch(function (error) {
