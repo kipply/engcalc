@@ -180,6 +180,7 @@ int main() {
 	scanf("%Lf", &target);
 	vi t;
 	t.push_back(0);
+	// printf("target = %Lf\n", target);
 	for (int i = 0; i < 5; i++) {
 		int j = templates.size();
 		templateSearch(t, i, i, 1);
@@ -188,13 +189,18 @@ int main() {
 			makeSequence(s, 0, j);
 		}
 	}
+	// printf("Done1\n");
 	for (int i = 0; i < sequences.size(); i++) {
 		pairs.push_back(pdv(evaluate(sequences[i]), sequences[i]));
 	}
+	// printf("Done2\n");
 	// printf("pairs.size() = %d\n", (int)pairs.size());
 	sort(pairs.begin(), pairs.end());
 
+	// printf("Done3\n");
 	pdv p = approximate(target);
+
+	// printf("Done4\n");
 	// printf("Approximate value: %.10Lf\n", p.first);
 	cout << latexfy(p.second) << endl;
 	return 0;
