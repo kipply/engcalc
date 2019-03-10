@@ -31,7 +31,7 @@ string latexfy(vector<int> v) {
         ep = ex[ind - 2] + " - " + ex[ind - 1];
       }
       if(v[i] == 7){
-        for(int k=0; k < 2; k++)
+        for(int k=1; k < 3; k++)
           if(exodr[ind - k] <2)
             ex[ind - k] = "\\left (" + ex[ind -k] + "\\right )";
         if(ex[ind - 2] == ex[ind - 1] && exodr[ind - 2] == 3)
@@ -66,6 +66,6 @@ string latexfy(vector<int> v) {
 
 
 int main(){
-  v = {3,4,7,2,3,0,8,9,9,1,0,3,6,0,3,6,9,9,6};
-  std::cout << latexfy() << endl;
+  vector<int> v = {0,0,5,0,7};
+  std::cout << latexfy(v) << endl;
 }
