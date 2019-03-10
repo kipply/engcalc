@@ -181,7 +181,7 @@ int main() {
 	vi t;
 	t.push_back(0);
 	// printf("target = %Lf\n", target);
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < 4; i++) {
 		int j = templates.size();
 		templateSearch(t, i, i, 1);
 		vi s(2 * i + 1);
