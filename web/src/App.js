@@ -4,7 +4,7 @@ import './App.css';
 import * as math from 'mathjs'
 import {Tex} from 'react-tex';
 
-var request = require('request');
+var axios = require('axios');
 
 var firebase = require('firebase');
 
@@ -73,12 +73,15 @@ class App extends Component {
     }
     try {
       this.answer = math.eval(toEval);
-      request('http://localhost:5000/evaluate?value=' + this.answer, (error, response, body) => {
-        this.answerEquation = body; 
+      axios.get('http://159.203.3.149:5000/evaluate?value=' + this.answer)
+      .then((response) => {
+        this.answerEquation = response.data; 
         this.equation = "";
         this.eState = false;
         this.setState({ state: this.state });
-        console.log(this.answerEquation);
+      })
+      .catch(function (error) {
+        alert("We made an OOPSIE")
       });
     } catch {
       alert("You made an OOPSIE");
