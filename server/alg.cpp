@@ -1,14 +1,15 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define vi vector<int>
-#define pdv pair<double, vi>
+#define pdv pair<long double, vi>
 
 vector<vi> templates;
 vector<vi> sequences;
-double constants[5] = {M_PI, M_E, (1.0 + sqrt(5)) / 2, 0.5772156649, 3e8};
+long double constants[5] = {M_PI, M_E, (1.0 + sqrt(5)) / 2, 0.5772156649, 299792458};
 vector<pdv> pairs;
 
 static vector<string> cst = {"\\pi ","e","\\varphi ","\\gamma ","c"};
+// static vector<string> cst = {"pi ","e ","GoldenRatio ","EulerGamma ","300000000 "};
 static vector<int> odr = {0, 0, 2, 1, 2, 2};
 
 // 5:+, 6:-, 7:*, 8:/, 9:^, 10:!
@@ -116,17 +117,17 @@ void makeSequence(vi &s, int idx, int tidx) {
 	return;
 }
 
-double evaluate(vi v) {
-	vector<double> stack;
+long double evaluate(vi v) {
+	vector<long double> stack;
 	for (int i = 0; i < v.size(); i++) {
 		if (v[i] < 5) {
 			stack.push_back(constants[v[i]]);
 		}
 		else if (v[i] < 10) {
-			double a = stack[stack.size() - 2];
-			double b = stack[stack.size() - 1];
+			long double a = stack[stack.size() - 2];
+			long double b = stack[stack.size() - 1];
 			stack.pop_back();
-			double ans;
+			long double ans;
 			if (v[i] == 5)
 				ans = a + b;
 			else if (v[i] == 6)
@@ -152,28 +153,31 @@ double evaluate(vi v) {
 	return stack[0];
 }
 
-vi approximate(double target) {
-	printf("Approximating %.10lf\n", target);
+pdv approximate(long double target) {
+	printf("Approximating %.10Lf\n", target);
 	int idx = lower_bound(pairs.begin(), pairs.end(), pdv(target, vector<int>())) - pairs.begin();
 	if (abs(pairs[idx - 1].first - target) < abs(pairs[idx].first - target))
 		idx--;
-	double approx = pairs[idx].first;
+	long double approx = pairs[idx].first;
 	vi ans = pairs[idx].second;
-	double error = abs(target - approx);
+	long double error = abs(target - approx);
 	if (error < 1e-3)
-		return ans;
-	vi errorApprox = approximate(error);
-	ans.insert(ans.end(), errorApprox.begin(), errorApprox.end());
-	if (approx < target)
+		return pdv(approx, ans);
+	pdv errorApprox = approximate(error);
+	ans.insert(ans.end(), errorApprox.second.begin(), errorApprox.second.end());
+	if (approx < target) {
 		ans.push_back(5); // add error to approx
-	else
+		return pdv(approx + errorApprox.first, ans);
+	}
+	else{
 		ans.push_back(6); // subtract error from approx
-	return ans;
+		return pdv(approx - errorApprox.first, ans);
+	}
 }
 
 int main() {
-	double target;
-	scanf("%lf", &target);
+	long double target;
+	scanf("%Lf", &target);
 	vi t;
 	t.push_back(0);
 	for (int i = 0; i < 5; i++) {
@@ -190,11 +194,8 @@ int main() {
 	printf("pairs.size() = %d\n", (int)pairs.size());
 	sort(pairs.begin(), pairs.end());
 
-	vi v = approximate(target);
-	cout << latexfy(v) << endl;
-	// printf("Sequence: ");
-	// for (int i = 0; i < v.size(); i++) {
-	// 	printf("%d ", v[i]);
-	// }
+	pdv p = approximate(target);
+	printf("Approximate value: %.10Lf\n", p.first);
+	cout << latexfy(p.second) << endl;
 	return 0;
 }
