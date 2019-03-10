@@ -30,9 +30,23 @@ class App extends Component {
     this.url = process.env.PUBLIC_URL + '/song.mp3';
     this.audio = new Audio(this.url);
     this.audioState = true;
-    this.audio.play();
-
   }
+
+  componentDidMount() {
+    this.play();
+    document.addEventListener("keydown", this._handleKeyDown);
+  }
+
+  play = () => {
+  this.setState({ play: true, pause: false })
+    this.audio.play();
+  }
+  
+  pause = () => {
+  this.setState({ play: false, pause: true })
+    this.audio.pause();
+  }
+  
 
   click(operation) {
     this.equation += operation;
@@ -63,10 +77,6 @@ class App extends Component {
     if (/^Enter$/.test(event.key)) {
       this.evaluate(event.key);
     }
-  }
-
-  componentDidMount(){
-      document.addEventListener("keydown", this._handleKeyDown);
   }
 
 
