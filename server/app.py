@@ -9,7 +9,7 @@ cors = CORS(app)
 def evaluate():
   args = request.args.to_dict()
   print(args)
-  subprocess.run(["g++", "-std=c++14", "-O3", "alg.cpp"])
+  # subprocess.run(["g++", "-std=c++14", "-O3", "alg.cpp"])
   p = subprocess.Popen(['./a.out'], stdout=subprocess.PIPE, stdin=subprocess.PIPE)
   p.stdin.write(bytes(args['value'], 'utf-8')) 
   return p.communicate()[0]
