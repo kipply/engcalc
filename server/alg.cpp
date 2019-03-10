@@ -154,7 +154,7 @@ long double evaluate(vi v) {
 }
 
 pdv approximate(long double target) {
-	printf("Approximating %.10Lf\n", target);
+	// printf("Approximating %.10Lf\n", target);
 	int idx = lower_bound(pairs.begin(), pairs.end(), pdv(target, vector<int>())) - pairs.begin();
 	if (abs(pairs[idx - 1].first - target) < abs(pairs[idx].first - target))
 		idx--;
@@ -191,11 +191,11 @@ int main() {
 	for (int i = 0; i < sequences.size(); i++) {
 		pairs.push_back(pdv(evaluate(sequences[i]), sequences[i]));
 	}
-	printf("pairs.size() = %d\n", (int)pairs.size());
+	// printf("pairs.size() = %d\n", (int)pairs.size());
 	sort(pairs.begin(), pairs.end());
 
 	pdv p = approximate(target);
-	printf("Approximate value: %.10Lf\n", p.first);
+	// printf("Approximate value: %.10Lf\n", p.first);
 	cout << latexfy(p.second) << endl;
 	return 0;
 }
