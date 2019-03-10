@@ -3,7 +3,7 @@
 using namespace std;
 
 vector<int> v;
-static vector<string> cst = {"\\pi","e","\\varphi","\\gamma","c"};
+static vector<string> cst = {"\\pi ","e","\\varphi ","\\gamma ","c"};
 static vector<int> odr = {0,0,2,1,2,2};
 
 // 5:+, 6:-, 7:*, 8:/, 9:^, 10:!
@@ -28,23 +28,23 @@ string latexfy() {
         ep = ex[ind-2] + " + "+ ex[ind-1];
       if(v[i] == 6){
         if(exodr[ind - 1] == 0)
-          ex[ind - 1] = "\\left("+ ex[ind - 1] +"\\right)";
+          ex[ind - 1] = "\\left ("+ ex[ind - 1] +"\\right )";
         ep = ex[ind - 2] + " - " + ex[ind - 1];
       }
       if(v[i] == 7){
         for(int k=0; k < 2; k++)
           if(exodr[ind - k] <2)
-            ex[ind - k] = "\\left(" + ex[ind -k] + "\\right)";
+            ex[ind - k] = "\\left (" + ex[ind -k] + "\\right )";
         //if(exodr[ind - 2] != 2)
         ep = ex[ind - 2] + "" +ex[ind -1];
         //else
           //ep = ex[ind - 2] + "\\cdot " + ex[ind -1];
       }
       if(v[i] == 8)
-        ep = "\\dfrac{" + ex[ind - 2] + "}{"+ ex[ind - 1] + "}";
+        ep = "\\dfrac {" + ex[ind - 2] + "}{"+ ex[ind - 1] + "}";
       if(v[i] == 9){
         if(exodr[ind - 2] <3)
-          ex[ind - 2] = "\\left("+ex[ind - 2]+"\\right)";
+          ex[ind - 2] = "\\left ("+ex[ind - 2]+"\\right )";
         ep = ex[ind - 2] + "^{" + ex[ind - 1] +"}";
       }
       exodr[ind - 2] = odr[v[i] - 5];
@@ -56,7 +56,7 @@ string latexfy() {
 
     if(v[i] == 10){
       if(exodr[ind - 1] <3)
-        ex[ind -1] = "\\left(" + ex[ind - 1] + "\\right)";
+        ex[ind -1] = "\\left (" + ex[ind - 1] + "\\right )";
       ex[ind - 1] = ex[ind - 1] + "!";
       exodr[ind - 1] = 2;
     }
